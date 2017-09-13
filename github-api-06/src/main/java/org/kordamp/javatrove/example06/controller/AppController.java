@@ -25,6 +25,8 @@ import org.kordamp.javatrove.example06.util.ThrowableEvent;
 
 import javax.inject.Inject;
 
+import java.util.function.Supplier;
+
 import static org.kordamp.javatrove.example06.model.State.READY;
 import static org.kordamp.javatrove.example06.model.State.RUNNING;
 
@@ -33,12 +35,12 @@ import static org.kordamp.javatrove.example06.model.State.RUNNING;
  */
 public class AppController {
     @Inject private AppModel model;
-    @Inject private Github github;
+    @Inject private Supplier<Github> github;
     @Inject private ApplicationEventBus eventBus;
 
     public void loadRepositories() {
         model.setState(RUNNING);
-        github.repositories(model.getOrganization())
+        github.get().repositories(model.getOrganization())
             .thenAccept(model.getRepositories()::addAll)
             .exceptionally(throwable -> {
                 eventBus.publishAsync(new ThrowableEvent(throwable));

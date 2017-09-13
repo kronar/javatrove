@@ -19,7 +19,10 @@
 package org.kordamp.javatrove.example06;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.TypeLiteral;
+import com.google.inject.name.Names;
 import org.kordamp.javatrove.example06.controller.AppController;
+import org.kordamp.javatrove.example06.impl.FITSupplier;
 import org.kordamp.javatrove.example06.impl.GithubAPIProvider;
 import org.kordamp.javatrove.example06.impl.GithubImpl;
 import org.kordamp.javatrove.example06.impl.ObjectMapperProvider;
@@ -34,6 +37,7 @@ import ru.vyarus.guice.ext.ExtAnnotationsModule;
 import javax.inject.Singleton;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 import static com.google.inject.name.Names.named;
 
@@ -58,6 +62,7 @@ public class AppModule extends ExtAnnotationsModule {
         bindAppController();
         bindAppModel();
         bindAppView();
+        bindFitSupplier();
     }
 
     protected void bindGithubApiUrl() {
@@ -98,6 +103,13 @@ public class AppModule extends ExtAnnotationsModule {
         bind(ApplicationEventHandler.class)
             .asEagerSingleton();
     }
+
+
+    protected void bindFitSupplier(){
+        bind(String.class).annotatedWith(Names.named("groovy.fit.impl.file")).toInstance("./githubFIT.impl");
+        bind(new TypeLiteral<Supplier<Github>>(){}).to(FITSupplier.class);
+    }
+
 
     protected void bindAppController() {
         bind(AppController.class).in(Singleton.class);
