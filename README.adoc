@@ -1,3 +1,16 @@
+This if fork of Java Trove project of Andres Almiray which I used to show fault injection testing  with groovy. 
+
+Build steps:
+1. Chekout this repo 
+2. cd github-06/
+3. ./gradlew build - for now 2 tests are failing but it is not showstopper. 
+4. run java app e.g. java -jar build/libs/github-api-06-all.jar
+5. try to query jboss organization from GitHub
+6. run  enableFIT.sh - file __githubFIT.impl will be renamed.
+7. try to query jboss organization from GitHub once again
+
+
+
 = Java Trove
 
 image:https://img.shields.io/badge/donations-Patreon-f96854.svg[link="https://www.patreon.com/user?u=6609318"]
